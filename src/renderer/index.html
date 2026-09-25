@@ -7,9 +7,81 @@
       content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:"
     />
     <title>Claude Interface</title>
+    <script src="./boot.js"></script>
   </head>
   <body>
-    <div id="root"></div>
+    <!--
+      THESIS: Neo-Deco. Art Deco geometry (zero radius, 1px hairlines, diamonds, 45° turns) on a dense agent workbench; refuses the rounded-bubble chat-app default.
+      OWN-WORLD: obsidian canvas, forest panels, sage hairlines, ivory type, lime only for live state, brass the lone warm metal. Josefin Sans tracked caps for signage, Jost for prose, JetBrains Mono for code and git. The diamond is the universal marker; framed surfaces carry ivory corner brackets.
+      STORY: the owner reads the agent's work, answers its prompts, views files and follows git without leaving one window.
+      FIRST VIEWPORT: three sage-ruled columns: chats/files left; the agent column center under a tab strip (a sunburst over a stepped base when empty); the git lane graph right; an instrument-panel status bar below; the composer anchored bottom center.
+      FORM: pinned by the owner's Neo-Deco blueprint; no concept roll.
+      FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+    -->
+    <div id="root">
+      <!-- Boot skeleton: static markup in the app's own classes, sized by boot.js from the saved layout, so it paints
+           before the app's script loads and React's first frame lands on the same geometry. Replaced on first render. -->
+      <div class="app boot" aria-busy="true" aria-label="Starting Claude Interface">
+        <header class="topbar">
+          <span class="brand"><img class="brand-logo" src="./src/assets/logo.png" alt="" /><span class="brand-name">Claude</span></span>
+          <span class="topbar-rule"></span>
+          <span class="project-picker"><span class="skel" style="width: 84px"></span></span>
+        </header>
+        <div class="workspace" style="grid-template-columns: var(--boot-cols, 260px 4px minmax(420px, 1fr) 4px 480px)">
+          <aside class="panel boot-left">
+            <div class="panel-tabs boot-tabs">
+              <span class="skel" style="width: 46px"></span><span class="skel" style="width: 38px; --i: 1"></span>
+            </div>
+            <div class="skel-list">
+              <div class="section-label history-group-label"><span class="skel" style="width: 44px"></span></div>
+              <div class="skel-history"><span class="skel" style="width: 72%"></span><span class="skel skel-meta" style="width: 28%"></span></div>
+              <div class="skel-history"><span class="skel" style="width: 54%; --i: 1"></span><span class="skel skel-meta" style="width: 35%; --i: 1"></span></div>
+              <div class="skel-history"><span class="skel" style="width: 83%; --i: 2"></span><span class="skel skel-meta" style="width: 42%; --i: 2"></span></div>
+              <div class="skel-history"><span class="skel" style="width: 47%; --i: 3"></span><span class="skel skel-meta" style="width: 29%; --i: 3"></span></div>
+              <div class="skel-history"><span class="skel" style="width: 66%; --i: 4"></span><span class="skel skel-meta" style="width: 36%; --i: 4"></span></div>
+              <div class="skel-history"><span class="skel" style="width: 58%; --i: 5"></span><span class="skel skel-meta" style="width: 43%; --i: 5"></span></div>
+            </div>
+          </aside>
+          <div class="resizer resizer-left boot-left"></div>
+          <main class="chat">
+            <div class="center-tabs"><div class="ctab skel-tab"><span class="skel" style="width: 96px"></span></div></div>
+            <div class="boot-center">
+              <img class="boot-mark" src="./src/assets/logo.png" alt="" />
+              <span class="marquee" aria-hidden="true"><i></i><i></i><i></i></span>
+            </div>
+            <div class="chat-bottom"><div class="composer"><div class="composer-box boot-composer"></div></div></div>
+          </main>
+          <div class="resizer resizer-right boot-right"></div>
+          <aside class="panel git-panel boot-right">
+            <div class="panel-header"><span class="skel" style="width: 96px"></span></div>
+            <div class="section-label">Changes</div>
+            <div class="skel-changes">
+              <div class="skel-file"><span class="skel" style="width: 9px"></span><span class="skel" style="width: 83%"></span></div>
+              <div class="skel-file"><span class="skel" style="width: 9px; --i: 1"></span><span class="skel" style="width: 47%; --i: 1"></span></div>
+              <div class="skel-file"><span class="skel" style="width: 9px; --i: 2"></span><span class="skel" style="width: 66%; --i: 2"></span></div>
+            </div>
+            <div class="section-label">History</div>
+            <div class="skel-graph">
+              <div class="skel-commit"><span class="skel-node"></span><span class="skel" style="width: 72%"></span><span class="skel skel-time" style="width: 38px"></span></div>
+              <div class="skel-commit"><span class="skel-node"></span><span class="skel" style="width: 54%; --i: 1"></span><span class="skel skel-time" style="width: 38px; --i: 1"></span></div>
+              <div class="skel-commit"><span class="skel-node"></span><span class="skel" style="width: 83%; --i: 2"></span><span class="skel skel-time" style="width: 38px; --i: 2"></span></div>
+              <div class="skel-commit"><span class="skel-node"></span><span class="skel" style="width: 47%; --i: 3"></span><span class="skel skel-time" style="width: 38px; --i: 3"></span></div>
+              <div class="skel-commit"><span class="skel-node"></span><span class="skel" style="width: 66%; --i: 4"></span><span class="skel skel-time" style="width: 38px; --i: 4"></span></div>
+              <div class="skel-commit"><span class="skel-node"></span><span class="skel" style="width: 58%; --i: 5"></span><span class="skel skel-time" style="width: 38px; --i: 5"></span></div>
+              <div class="skel-commit"><span class="skel-node"></span><span class="skel" style="width: 77%; --i: 6"></span><span class="skel skel-time" style="width: 38px; --i: 6"></span></div>
+              <div class="skel-commit"><span class="skel-node"></span><span class="skel" style="width: 41%; --i: 7"></span><span class="skel skel-time" style="width: 38px; --i: 7"></span></div>
+            </div>
+          </aside>
+        </div>
+        <footer class="statusbar">
+          <span class="sb-status"><span class="skel" style="width: 56px"></span></span>
+          <span class="sb-field"><span class="sb-label">model</span><span class="skel" style="width: 48px; --i: 1"></span></span>
+          <span class="sb-field"><span class="sb-label">effort</span><span class="skel" style="width: 62px; --i: 2"></span></span>
+          <span class="sb-field"><span class="sb-label">mode</span><span class="skel" style="width: 76px; --i: 3"></span></span>
+          <span class="sb-spacer"></span>
+        </footer>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,11 +1,14 @@
 import { useMemo, useState } from 'react'
 import type { SDKSessionInfo } from '../../../shared/types'
-import { newChat, resumeChat } from '../actions'
+import { useShallow } from 'zustand/react/shallow'
+import { newAgent, resumeChat } from '../actions'
 import { relativeTime } from '../lib/format'
 import { useApp } from '../store/app'
-import { useSession } from '../store/session'
+import { useAgents, useSession } from '../store/agents'
 import { useUi } from '../store/ui'
+import '../styles/agents.css'
 import { Icon } from './Icon'
+import { HistorySkeleton } from './Skeleton'
 
 const title = (s: SDKSessionInfo) => s.customTitle || s.summary || s.firstPrompt || 'Untitled chat'
 
@@ -20,8 +23,14 @@ function groupLabel(ms: number): string {
 
 export function HistoryPanel() {
   const sessions = useApp((s) => s.sessions)
+  const historyLoaded = useApp((s) => s.historyLoaded)
   const cwd = useApp((s) => s.cwd)
   const activeId = useSession((s) => s.sessionId)
+  const openIds = useAgents(useShallow((s) => Object.values(s.meta).map((m) => m.sessionId)))
+  const agentFor = (sessionId: string) => {
+    const { agents, meta } = useAgents.getState()
+    return agents.find((a) => meta[a.id]?.sessionId === sessionId)
+  }
   const [filter, setFilter] = useState('')
   const [editing, setEditing] = useState<string | null>(null)
 
@@ -40,6 +49,8 @@ export function HistoryPanel() {
     setEditing(null)
     if (!cwd || !value.trim() || value === title(s)) return
     await window.api.history.rename(s.sessionId, value.trim(), cwd)
+    const open = agentFor(s.sessionId)
+    if (open) useAgents.getState().setTitle(open.id, value.trim())
     await useApp.getState().refreshHistory()
   }
 
@@ -51,8 +62,9 @@ export function HistoryPanel() {
       confirmLabel: 'Delete',
     })
     if (!ok) return
+    const open = agentFor(s.sessionId)
+    if (open) await useAgents.getState().close(open.id)
     await window.api.history.remove(s.sessionId, cwd)
-    if (s.sessionId === activeId) await newChat()
     await useApp.getState().refreshHistory()
   }
 
@@ -60,20 +72,21 @@ export function HistoryPanel() {
     <div className="tab-body history-panel">
       <div className="tab-toolbar">
         <input className="history-search" placeholder="Search chats…" value={filter} onChange={(e) => setFilter(e.target.value)} />
-        <button className="btn btn-small" onClick={() => void newChat()} title="New chat (/clear)">
+        <button className="btn btn-small" onClick={() => void newAgent()} title="New agent tab (Ctrl+T)">
           <Icon name="plus" size={12} /> New
         </button>
       </div>
       <div className="history-list">
-        {groups.length === 0 && <div className="muted pad">No chats in this project yet.</div>}
+        {!historyLoaded && <HistorySkeleton />}
+        {historyLoaded && groups.length === 0 && <div className="muted pad">No chats in this project yet.</div>}
         {groups.map(([label, items]) => (
           <div key={label} className="history-group">
             <div className="section-label history-group-label">{label}</div>
             {items.map((s) => (
               <div
                 key={s.sessionId}
-                className={`history-item${s.sessionId === activeId ? ' is-active' : ''}`}
-                onClick={() => s.sessionId !== activeId && void resumeChat(s.sessionId)}
+                className={`history-item${s.sessionId === activeId ? ' is-active' : ''}${openIds.includes(s.sessionId) ? ' is-open' : ''}`}
+                onClick={() => void resumeChat(s.sessionId)}
                 onDoubleClick={() => setEditing(s.sessionId)}
                 title={s.firstPrompt}
               >
@@ -93,6 +106,7 @@ export function HistoryPanel() {
                   <div className="history-title">{title(s)}</div>
                 )}
                 <div className="history-meta">
+                  {openIds.includes(s.sessionId) && <span className="history-open">open</span>}
                   {relativeTime(s.lastModified)}
                   {s.gitBranch && (
                     <span className="history-branch">

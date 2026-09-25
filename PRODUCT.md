@@ -30,7 +30,7 @@ Unlike the stock CLI or the official desktop app, the whole interface is the own
 - Not built yet: attachments, @file autocomplete, virtualized lists, installer packaging.
 
 ## Brand Commitments
-- The owner pinned a "Neo-Deco" visual direction (Art Deco geometry for a dense, dark developer tool) as the app's single design language, replacing earlier themes. Its spec lives with the design work, not here.
+- The owner pinned a "Neo-Deco" visual direction (Art Deco geometry for a dense developer tool) as the app's single design language, replacing earlier themes. It comes in two lights, both deliberately low-glare (a softened dark and a parchment light, never bright white), and the app draws its own window chrome instead of the native Windows title bar. The visual spec lives in DESIGN.md.
 
 ## Product Principles
 1. Parity first: never trade away a CLI capability for looks.

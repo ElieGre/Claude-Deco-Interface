@@ -10,6 +10,7 @@ import { useFiles } from '../store/files'
 import { useUi, type MenuItem } from '../store/ui'
 import { useViewer } from '../store/viewer'
 import { Icon } from './Icon'
+import { TreeSkeleton } from './Skeleton'
 
 export const DRAG_TYPE = 'application/x-claude-file'
 
@@ -120,7 +121,7 @@ function DirChildren({ dir, depth, deco }: { dir: string; depth: number; deco: D
   useEffect(() => {
     if (!entries) void useFiles.getState().load(dir)
   }, [dir, entries])
-  if (!entries) return <div className="tree-loading" style={{ paddingLeft: indent(depth) }}>…</div>
+  if (!entries) return <TreeSkeleton indent={indent(depth)} />
   if (!entries.length) return <div className="tree-empty" style={{ paddingLeft: indent(depth) }}>empty</div>
   return (
     <>

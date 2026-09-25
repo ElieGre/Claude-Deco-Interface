@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-25T00:00:00.000Z",
+  "title": "Design System: Claude Interface",
+  "extensions": {
+    "colorMeta": {
+      "obsidian": { "role": "neutral", "displayName": "Obsidian Canvas", "canonical": "#14181a", "tonalRamp": ["#22282b", "#3d474d", "#576671", "#748493", "#96a4b0", "#b6c0c8", "#d3dbdf", "#f0f2f4"], "note": "Lifted off near-black (was #0b0d0f) so the canvas reads as a lit surface, not a void." },
+      "forest": { "role": "neutral", "displayName": "Forest Panel", "canonical": "#18221d", "tonalRamp": ["#232f28", "#3e564a", "#587a67", "#729c85", "#95b5a2", "#b6cdbf", "#d3e0d8", "#f0f5f2"], "light": "#dad8c8" },
+      "bg-elev": { "role": "neutral", "displayName": "Elevated Forest", "canonical": "#1d2a23", "tonalRamp": ["#26332b", "#405849", "#597c65", "#729d81", "#93b69f", "#b4ccbe", "#d1e0d8", "#f0f5f2"], "light": "#ebe6da" },
+      "bg-input": { "role": "neutral", "displayName": "Input Forest", "canonical": "#151c18", "tonalRamp": ["#212e26", "#3d5447", "#567765", "#719984", "#94b3a2", "#b5cabe", "#d2dfd8", "#f0f4f2"], "light": "#ede8dc" },
+      "bg-hover": { "role": "neutral", "displayName": "Hover Forest", "canonical": "#213027", "tonalRamp": ["#243128", "#3e5745", "#567b60", "#709d7e", "#92b69d", "#b3ccbb", "#d1e0d6", "#f0f5f2"], "light": "#d2d1c0" },
+      "code-bg": { "role": "neutral", "displayName": "Code Well", "canonical": "#111618", "tonalRamp": ["#212f27", "#3d5447", "#567966", "#719985", "#93b3a2", "#b4cbbe", "#d1e0d8", "#f0f5f2"], "light": "#ddd7c8" },
+      "sage": { "role": "primary", "displayName": "Sage", "canonical": "#4e8752", "tonalRamp": ["#1c301d", "#345b37", "#4b814f", "#64a568", "#8bbc8e", "#aed0b1", "#cfe3d0", "#eff6ef"], "light": "#3a6b3e", "note": "The one token that itself deepens in light mode, so it still clears 3:1 as a line on parchment." },
+      "accent-text": { "role": "primary", "displayName": "Lifted Sage (Text)", "canonical": "#8cc291", "tonalRamp": ["#1c3220", "#33593a", "#498152", "#63a56d", "#8bbe92", "#add2b3", "#cee4d1", "#eef6f0"], "light": "#2a6231" },
+      "accent-fill": { "role": "primary", "displayName": "Sage Fill", "canonical": "#3e7342", "tonalRamp": ["#1b321d", "#325d35", "#47854c", "#60a965", "#88bf8c", "#acd2af", "#cde4cf", "#eef6ef"], "note": "Unchanged across themes — a fixed-color fill, not an ambient surface color." },
+      "accent-soft": { "role": "primary", "displayName": "Sage Soft (Selection Fill)", "canonical": "rgb(78 135 82 / 0.16)", "tonalRamp": [], "light": "rgb(78 135 82 / 0.18)" },
+      "lime": { "role": "secondary", "displayName": "Vivid Lime (Live State)", "canonical": "#a3e635", "tonalRamp": ["#2d4408", "#557f10", "#79b616", "#9ce425", "#b5eb5c", "#cbf18e", "#e0f7bb", "#f5fce8"], "light": "#4a8c0c", "note": "This is --vivid, the fill/dot green. See vivid-text for the separate text-legible green." },
+      "vivid-text": { "role": "secondary", "displayName": "Vivid Lime (Text)", "canonical": "#a3e635", "tonalRamp": ["#2d4408", "#557f10", "#79b616", "#9ce425", "#b5eb5c", "#cbf18e", "#e0f7bb", "#f5fce8"], "light": "#2f6109", "note": "Same lime as --vivid in dark mode; diverges to a darker, more-legible green in light mode where a single lime can't hold both the 'lit dot' and 'readable on parchment' jobs." },
+      "emerald": { "role": "status", "displayName": "Success Emerald", "canonical": "#22c55e", "tonalRamp": ["#0b411f", "#157a3a", "#1eae53", "#2edb6e", "#62e492", "#92ecb3", "#bef4d2", "#e9fbf0"], "light": "#126534" },
+      "brass": { "role": "tertiary", "displayName": "Brass (Warm Metal)", "canonical": "#d4af6a", "tonalRamp": ["#3b2d11", "#6f5320", "#9e772e", "#c89941", "#d6b371", "#e2ca9c", "#eedfc4", "#f9f4eb"], "light": "#735216", "note": "warning status color; light re-tunes brass to a deep ochre ink so it still reads on parchment." },
+      "ivory": { "role": "neutral", "displayName": "Ivory (Fixed-Fill Text)", "canonical": "#fdfbf7", "tonalRamp": ["#3d2e0f", "#72561d", "#a37a29", "#ce9d3b", "#dab66c", "#e6cc99", "#f0e0c2", "#faf5eb"], "note": "Unchanged across themes. Reserved for text on a fixed-color fill (accent-fill, danger-fill) that doesn't itself adapt to theme. Do not use for markers on the ambient canvas — use mark instead." },
+      "mark": { "role": "neutral", "displayName": "Mark (Emphasis Ink)", "canonical": "#fdfbf7", "tonalRamp": ["#3d2e0f", "#72561d", "#a37a29", "#ce9d3b", "#dab66c", "#e6cc99", "#f0e0c2", "#faf5eb"], "light": "#161d18", "note": "The corner-bracket tick, active-tab underline/diamond, viewing-file edge, resizer hover. Points at ivory in dark, a near-black ink in light — this is what actually adapts across themes where raw ivory would not." },
+      "text": { "role": "neutral", "displayName": "Text (Softened Ivory)", "canonical": "#ede9de", "tonalRamp": ["#312d21", "#584f3b", "#7c6f54", "#a08f6f", "#bcac8d", "#d3c7ae", "#e6ddcc", "#f7f4ec"], "light": "#232d26", "note": "Primary text. One step off pure white/black in either theme so the canvas glows less." },
+      "text-muted": { "role": "neutral", "displayName": "Muted Text", "canonical": "#b3b9ae", "tonalRamp": ["#262923", "#454c40", "#636c5b", "#818e77", "#a1aa96", "#bdc4b6", "#d7dbd2", "#f2f3f0"], "light": "#3f4a42" },
+      "text-dim": { "role": "neutral", "displayName": "Dim Text", "canonical": "#8a978c", "tonalRamp": ["#242825", "#434c42", "#5f6c5e", "#7c8b7a", "#9ca99b", "#bac4b9", "#d6dbd4", "#f1f3f1"], "light": "#515b4b" },
+      "border": { "role": "neutral", "displayName": "Hairline Border", "canonical": "#2b3f31", "tonalRamp": ["#1f2f24", "#3a5741", "#527c5c", "#6c9f78", "#91b79a", "#b3cdb9", "#d1e1d5", "#f0f5f1"], "light": "#bcc1ac" },
+      "danger": { "role": "status", "displayName": "Danger Red", "canonical": "#e5715f", "tonalRamp": ["#42120b", "#7b2214", "#af301d", "#dd442c", "#e57361", "#ed9e91", "#f4c5bd", "#fbece9"], "light": "#9e3526" },
+      "danger-fill": { "role": "status", "displayName": "Danger Fill", "canonical": "#c4452f", "tonalRamp": ["#341008", "#652114", "#93321f", "#bd452d", "#ce7361", "#e19e92", "#eec6bd", "#faece9"], "note": "The close window-control's hover field, under ivory text. Unchanged across themes — a fixed fill, not an ambient text color." },
+      "info": { "role": "status", "displayName": "Info Teal", "canonical": "#6cc4b0", "tonalRamp": ["#16372f", "#296658", "#3a927e", "#50b9a1", "#7ccab9", "#a4dace", "#c8e9e2", "#edf8f5"], "light": "#185e54" },
+      "lane-jade": { "role": "chart", "displayName": "Lane Jade", "canonical": "#7db482", "tonalRamp": ["#1c311e", "#345b38", "#4b8150", "#64a56a", "#8bbc8f", "#aed0b1", "#cee3d0", "#eff6ef"], "light": "#2f6a36" },
+      "lane-parchment": { "role": "chart", "displayName": "Lane Parchment", "canonical": "#e8dfc4", "tonalRamp": ["#372f15", "#675728", "#937c39", "#ba9f4f", "#ccb77b", "#dbcda3", "#eae1c8", "#f8f5ed"], "light": "#6e5b32" },
+      "lane-terracotta": { "role": "chart", "displayName": "Lane Terracotta", "canonical": "#e08e79", "tonalRamp": ["#3e180e", "#742d1b", "#a64026", "#d15738", "#dd816a", "#e7a897", "#f1cbc1", "#faeeea"], "light": "#b0553c" },
+      "lane-stone": { "role": "chart", "displayName": "Lane Stone", "canonical": "#aeb8b4", "tonalRamp": ["#242927", "#434c48", "#5f6d67", "#7d8d86", "#9da9a4", "#bbc3c0", "#d6dbd9", "#f1f3f2"], "light": "#5e6b66" },
+      "syn-string": { "role": "syntax", "displayName": "Syntax String", "canonical": "#5fd08b", "tonalRamp": ["#113b22", "#206e3f", "#2e9e5a", "#42c776", "#71d598", "#9ce2b8", "#c4eed4", "#ebf9f1"], "light": "#0f6b45" },
+      "syn-function": { "role": "syntax", "displayName": "Syntax Function", "canonical": "#e9dfc2", "tonalRamp": ["#382f14", "#695826", "#967d36", "#bea14b", "#ceb878", "#ddcea1", "#ebe2c7", "#f8f5ec"], "light": "#5a4420" },
+      "syn-parameter": { "role": "syntax", "displayName": "Syntax Parameter", "canonical": "#c9d4c5", "tonalRamp": ["#242c21", "#42523d", "#5f7557", "#7c9772", "#9db196", "#bbc9b6", "#d6ded3", "#f1f4f0"], "light": "#3e4a42" },
+      "syn-punctuation": { "role": "syntax", "displayName": "Syntax Punctuation", "canonical": "#919f94", "tonalRamp": ["#252a26", "#434d45", "#606d63", "#7d8f80", "#9daa9f", "#bbc4bd", "#d6dbd7", "#f1f3f2"], "light": "#56615a" },
+      "syn-comment": { "role": "syntax", "displayName": "Syntax Comment", "canonical": "#75897a", "tonalRamp": ["#232924", "#414d44", "#5e6e61", "#7a8f7f", "#9cab9f", "#bac5bc", "#d6dcd7", "#f1f3f2"], "light": "#545f53" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The empty-chat headline over the sunburst. The single largest text in the app; appears once per chat." },
+      "headline": { "displayName": "Headline", "purpose": "Agent-prose h1/h2/h3 inside markdown replies (steps down to 19px/16px for h2/h3)." },
+      "title": { "displayName": "Title", "purpose": "Chrome titles: the topbar wordmark and panel titles." },
+      "body": { "displayName": "Body", "purpose": "Long-form reading text: agent replies, user messages, thinking transcripts, dialog and plan bodies." },
+      "label": { "displayName": "Label", "purpose": "The tracked-caps signage voice: section labels, tabs, chips, status-bar fields, table headers. Actual sizes span 9.5-11.5px; see DESIGN.md's Type Scale table for every step." },
+      "mono": { "displayName": "Mono", "purpose": "Anything code- or git-shaped: tool cards, git rows, the file viewer, fenced code blocks." }
+    },
+    "shadows": [
+      { "name": "ambient-overlay", "value": "0 16px 32px -16px rgb(0 0 0 / 0.75)", "light": "0 14px 28px -14px rgb(40 48 40 / 0.35)", "purpose": "The only shadow in the system (--shadow-float). Lifts floating overlays (slash-menu, context-menu, toast, modal backdrop) off the canvas. Never used on panels, cards, or buttons." }
+    ],
+    "motion": [
+      { "name": "marquee", "value": "1.2s cubic-bezier(0.16, 1, 0.3, 1) infinite, 3 diamonds staggered 0.4s apart", "purpose": "The signature motion: three diamonds lit lime in sequence wherever work is in flight (status bar, center tab, agent-column indicator, side questions, settings panel loading state)." },
+      { "name": "blink", "value": "1s steps(2) infinite", "purpose": "The lime block-cursor at the end of streaming agent text." },
+      { "name": "ease-standard", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Default easing for chevron rotation, toast entry, the settings switch thumb, and the empty-chat sunburst ray-in animation." },
+      { "name": "state-transition", "value": "0.15s (background/box-shadow/border-color)", "purpose": "Default duration for hover and focus state changes across buttons, inputs, and rows." },
+      { "name": "focus-dim", "value": "0.2s opacity", "purpose": "The brand mark and window controls dim to 0.5 opacity when the frameless window loses focus (:root[data-window-focus='false'])." }
+    ],
+    "breakpoints": [],
+    "assets": [
+      {
+        "name": "brand-mark",
+        "kind": "raster",
+        "files": ["src/renderer/src/assets/logo.png", "resources/icon.ico", "resources/icon.png"],
+        "description": "Owner-supplied Art Deco winged crab, copper body, brass legs, green eyes. Replaced the earlier code-drawn 'diamond within a diamond' SVG mark (DecoMark, removed from Icon.tsx). Placements: TopBar .brand-logo (96px source, 26px display), MessageList Sunburst .sun-mark (64x45, standing on the horizon inside the inner arc; rays now start at r=50 to clear it), and the OS app/taskbar/Alt-Tab icon plus a notification-area tray icon (src/main/index.ts createTray).",
+        "provenance": "owner-supplied; embedded in the PNG/ICO files",
+        "doNotRegenerate": true
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Filled sage action button (e.g. Send).",
+      "html": "<button class=\"ds-btn-primary\">Send</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 7px; background: var(--accent-fill); border: 1px solid var(--sage); color: var(--ivory); padding: 8px 14px 6px; font: 400 11.5px/1.2 var(--font-ui); text-transform: uppercase; letter-spacing: 0.14em; cursor: pointer; transition: background 0.15s, box-shadow 0.15s; } .ds-btn-primary:hover { box-shadow: inset 0 0 0 1px var(--ivory); } .ds-btn-primary:focus-visible { outline: 1px solid var(--accent-text); outline-offset: 2px; } .ds-btn-primary:disabled { opacity: 0.4; cursor: default; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Default outlined button used for secondary actions (Cancel, toolbar actions).",
+      "html": "<button class=\"ds-btn-ghost\">Cancel</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: 7px; background: transparent; border: 1px solid var(--border-strong); color: var(--text); padding: 8px 14px 6px; font: 400 11.5px/1.2 var(--font-ui); text-transform: uppercase; letter-spacing: 0.14em; cursor: pointer; transition: background 0.15s; } .ds-btn-ghost:hover { background: var(--bg-hover); } .ds-btn-ghost:focus-visible { outline: 1px solid var(--accent-text); outline-offset: 2px; }"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "icon-btn",
+      "description": "28x28 square icon-only button used across all chrome (panel toggles, viewer actions, theme toggle).",
+      "html": "<button class=\"ds-icon-btn\" aria-label=\"Toggle panel\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.25\" stroke-linecap=\"square\"><path d=\"M2 4.5h12M2 8h9M2 11.5h6\"/></svg></button>",
+      "css": ".ds-icon-btn { display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 1px solid transparent; background: transparent; color: var(--text-muted); cursor: pointer; } .ds-icon-btn:hover { background: var(--bg-hover); border-color: var(--border); color: var(--text); } .ds-icon-btn.is-on { color: var(--text); } .ds-icon-btn:disabled { opacity: 0.35; cursor: default; }"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Tracked-caps label chip; the branch variant swaps to untracked mono type.",
+      "html": "<span class=\"ds-chip\">Active</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px 1px; border: 1px solid var(--border-strong); font: 400 10px/1.3 var(--font-ui); text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent-text); }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "The composer textarea / search input treatment: flat well, sage border on focus.",
+      "html": "<input class=\"ds-input\" placeholder=\"Message Claude — / for commands\" />",
+      "css": ".ds-input { width: 100%; background: var(--bg-input); border: 1px solid var(--border); color: var(--text); padding: 6px 10px 4px; font: 400 15px/1.5 var(--font-prose); outline: none; transition: border-color 0.15s; } .ds-input:focus { border-color: var(--border-strong); } .ds-input::placeholder { color: var(--text-dim); }"
+    },
+    {
+      "name": "Tool Card",
+      "kind": "card",
+      "refersTo": "tool-card",
+      "description": "Collapsible agent tool-call card: dot status, mono name/summary, expandable body. The system's signature component.",
+      "html": "<div class=\"ds-tool\"><button class=\"ds-tool-head\"><span class=\"ds-tool-dot\"></span><span class=\"ds-tool-name\">Bash</span><span class=\"ds-tool-summary\">npm run build</span></button></div>",
+      "css": ".ds-tool { border: 1px solid var(--border); background: var(--bg-panel); } .ds-tool-head { display: flex; align-items: center; gap: 10px; width: 100%; padding: 7px 10px 7px 12px; border: none; background: none; color: inherit; text-align: left; cursor: pointer; } .ds-tool-head:hover { background: var(--bg-hover); } .ds-tool-dot { width: 6px; height: 6px; flex: none; background: var(--text-dim); transform: rotate(45deg); } .ds-tool-name { font: 600 12px/1.4 var(--font-mono); color: var(--text); } .ds-tool-summary { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-muted); font: 400 12px/1.4 var(--font-mono); }"
+    },
+    {
+      "name": "Diamond Tab",
+      "kind": "nav",
+      "refersTo": "center-tabs",
+      "description": "The Agent tab in the center tab strip: hollow diamond, fills --mark when active, lime when Claude is waiting on the user.",
+      "html": "<div class=\"ds-tabstrip\"><button class=\"ds-ctab is-active\"><span class=\"ds-ctab-diamond\"></span>Agent</button></div>",
+      "css": ".ds-tabstrip { display: flex; align-items: stretch; height: 36px; background: linear-gradient(to top, var(--sage) 1px, var(--bg-panel) 1px); } .ds-ctab { display: inline-flex; align-items: center; gap: 8px; padding: 2px 14px 0; border: none; border-right: 1px solid var(--border); background: none; color: var(--text-dim); font: 400 11px/1 var(--font-ui); text-transform: uppercase; letter-spacing: 0.18em; cursor: pointer; } .ds-ctab.is-active { color: var(--text); background: var(--bg); box-shadow: inset 0 1px 0 var(--mark); } .ds-ctab-diamond { width: 6px; height: 6px; border: 1px solid var(--text-dim); transform: rotate(45deg); } .ds-ctab.is-active .ds-ctab-diamond { background: var(--mark); border-color: var(--mark); }"
+    },
+    {
+      "name": "Window Controls",
+      "kind": "custom",
+      "refersTo": "win-controls",
+      "description": "Frameless-window minimize/maximize/close cells drawn in the Neo-Deco line; the close cell is the one place danger-fill appears.",
+      "html": "<div class=\"ds-win-controls\"><button class=\"ds-win-btn\" aria-label=\"Minimize\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.25\" stroke-linecap=\"square\"><path d=\"M3.5 8.5h9\"/></svg></button><button class=\"ds-win-btn\" aria-label=\"Maximize\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.25\" stroke-linecap=\"square\" stroke-linejoin=\"miter\"><path d=\"M5 3.5h6l1.5 1.5v6L11 12.5H5L3.5 11V5z\"/></svg></button><button class=\"ds-win-btn ds-win-close\" aria-label=\"Close\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.25\" stroke-linecap=\"square\"><path d=\"M4 4l8 8M12 4l-8 8\"/></svg></button></div>",
+      "css": ".ds-win-controls { position: relative; display: flex; padding-left: 12px; } .ds-win-controls::before { content: ''; position: absolute; left: 0; top: 50%; width: 1px; height: 20px; margin-top: -10px; background: var(--border); } .ds-win-btn { display: grid; place-items: center; width: 46px; height: 44px; padding: 0; border: none; background: none; color: var(--text-muted); transition: background 0.12s, color 0.12s; } .ds-win-btn:hover { background: var(--bg-hover); color: var(--text); } .ds-win-close:hover { background: var(--danger-fill); color: var(--ivory); }"
+    },
+    {
+      "name": "Settings Switch",
+      "kind": "input",
+      "refersTo": "settings-switch",
+      "description": "On/off toggle in the Claude Code settings panel: a hairline track with a diamond thumb that slides and turns lime when on.",
+      "html": "<button class=\"ds-switch is-on\" role=\"switch\" aria-checked=\"true\"></button>",
+      "css": ".ds-switch { position: relative; width: 38px; height: 18px; border: 1px solid var(--border-strong); background: var(--bg-input); cursor: pointer; padding: 0; } .ds-switch::after { content: ''; position: absolute; top: 4px; left: 5px; width: 8px; height: 8px; background: var(--text-dim); transform: rotate(45deg); transition: left 0.18s cubic-bezier(0.16, 1, 0.3, 1), background 0.18s; } .ds-switch.is-on { background: var(--accent-soft); } .ds-switch.is-on::after { left: 23px; background: var(--vivid); } .ds-switch:disabled { opacity: 0.5; cursor: default; }"
+    },
+    {
+      "name": "Side Question Card",
+      "kind": "card",
+      "refersTo": "btw-card",
+      "description": "A /btw side-answer card above the composer: lime-tagged, never enters the main transcript.",
+      "html": "<section class=\"ds-btw-card\"><header class=\"ds-btw-head\"><span class=\"ds-btw-tag\">btw</span><span class=\"ds-btw-question\">What does this function return?</span></header><div class=\"ds-btw-answer\">It returns the parsed config object.</div></section>",
+      "css": ".ds-btw-card { border: 1px solid var(--border); border-left: 2px solid var(--vivid); background: var(--bg-elev); padding: 8px 12px 6px; } .ds-btw-head { display: flex; align-items: center; gap: 10px; } .ds-btw-tag { font: 400 10.5px/1 var(--font-ui); text-transform: uppercase; letter-spacing: 0.18em; color: var(--vivid); } .ds-btw-question { flex: 1; min-width: 0; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .ds-btw-answer { padding: 4px 0 2px; font: 400 15px/1.55 var(--font-prose); color: var(--text); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Instrument Panel",
+    "overview": "Claude Interface reads like the cockpit of a dense, dark machine, not a chat app. Every surface is a flat panel bounded by a 1px sage hairline; every state (streaming, HEAD, the caret, a running tool) is reported the same way an instrument panel reports it — a single lit diamond, a color that turns on and off, never a bounce or a bubble. The geometry is Art Deco stripped to its structural bones: zero radius, 45° turns, diamonds as the one recurring mark, --mark corner brackets on anything that needs to read as \"focused.\" Nothing about it is playful; it is built for a developer who lives in this window for hours next to a terminal and an editor, and who wants the agent's work, its prompts, the project's files, and its git history legible at a glance without leaving the frame.\n\nThe palette refuses warmth almost everywhere on purpose — obsidian canvas, forest panels, sage structure, ivory-adjacent text — so that the two exceptions read as signal instead of decoration: lime is lit only when something is alive right now (HEAD, an unpushed commit, the streaming caret), and brass is the single warm metal, reserved for warnings and one syntax token. The system explicitly rejects the rounded-bubble chat-app default: no radius, no soft drop shadows on resting surfaces, no chat bubbles at all — the agent's replies run in an indented column marked by a rule and a diamond, not a card.\n\nThe system now ships in two lights, not one. Dark is the default: a canvas lifted off near-black (#14181a, not the original #0b0d0f) so the obsidian reads as a deep surface rather than a void. Light (:root[data-theme='light']) is its bone-and-parchment inversion — aged paper tones and forest-green ink, never bright white. Both are deliberately low-glare; the system treats \"dark mode\" and \"light mode\" as the same instrument panel under two different lighting conditions, not two different products. The window itself is frameless: the native title bar is hidden, and the top bar draws its own drag region, brand mark and window controls (minimize/maximize/close) in the same Deco vocabulary as everything else. The brand mark is the one departure from the system's drawn geometry: it's the owner's own artwork, an Art Deco winged crab rendered in copper with brass legs and green eyes, used as a fixed raster asset (never a generated shape) across the top bar, the empty-chat sunburst, and the app/taskbar/tray icons.",
+    "keyCharacteristics": [
+      "Flat obsidian/forest surfaces, zero border-radius, 1px hairlines as the only structural device",
+      "Diamonds (45°-rotated squares) as the universal status/marker glyph, reused at every scale from tab dots to git graph nodes",
+      "Lime is exclusively a \"live\" signal (HEAD, unpushed, caret, streaming) — never a general accent",
+      "Tracked-caps Josefin Sans as the signage voice for every label, tab, and chip; Jost for reading prose; JetBrains Mono for anything code- or git-shaped",
+      "--mark corner brackets mark the one \"framed\" surface treatment (prompts, dialogs, focused composer)",
+      "Two lights, one language: a lifted-obsidian dark and a bone-parchment light, both intentionally low-glare — dark never drops to near-black, light never rises to true white",
+      "The window chrome is hand-drawn, not native — a frameless Electron window with its own drag region and minimize/maximize/close cells — except the brand mark itself, which is the owner's own raster artwork (a copper Deco crab), never a drawn shape"
+    ],
+    "rules": [
+      { "name": "The One Live Color Rule", "body": "Lime appears only where something is happening right now — HEAD, an unpushed commit, a caret, a stream, an in-progress todo. If nothing is live, nothing on screen is lime.", "section": "colors" },
+      { "name": "The Warm Metal Rule", "body": "Brass is the only warm hue in the system. It never shares a surface with a second warm color — no oranges, golds, or reds beyond the single danger red reserved for destructive/deleted state.", "section": "colors" },
+      { "name": "The Two Lights Rule", "body": "Both themes are deliberately low-glare. Dark is lifted off near-black (#14181a, never #0b0d0f-black); light is aged bone and parchment (#e6e0d2, never white). Neither theme is an inversion of the other's extremes.", "section": "colors" },
+      { "name": "The Contrast Floor Rule", "body": "Every text token clears 4.5:1 against both the panel tone and --bg-hover; every line token (--border, --border-strong) clears 3:1. This is the constraint the light-theme values were tuned against.", "section": "colors" },
+      { "name": "The Mark vs. Ivory Rule", "body": "Use --mark, never raw --ivory, for anything that draws a marker, tick or emphasis line directly on the ambient canvas or a panel — --mark repoints from ivory to a near-black ink in light mode, while raw --ivory stays fixed near-white in both themes. Raw --ivory is reserved for text on a fixed-color fill (--accent-fill, --danger-fill) that doesn't itself change across themes.", "section": "colors" },
+      { "name": "The Weight Line Rule", "body": "Josefin Sans carries weight 300 for headers and anything set at 15px or larger; everything smaller runs at weight 400. There is no other weight in the type system.", "section": "typography" },
+      { "name": "The Signage vs. Prose Rule", "body": "Uppercase tracked Josefin Sans names things (labels, tabs, chips); normal-case Jost explains things (agent answers, dialogs). A string of prose never appears in the signage voice, and a label never appears in prose case.", "section": "typography" },
+      { "name": "The Ambient-Only Rule", "body": "A shadow appears only under something that floats above the layout (a menu, a toast). Anything that lives inside the layout — a panel, a card, a row, a button — stays flat and uses a border or a background step instead.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep every corner at zero radius (--radius: 0) — buttons, inputs, cards, dialogs, tabs alike.",
+      "Do render status and progress exclusively through the diamond motif and the three-diamond Marquee animation — no spinners, no progress bars, no skeleton shimmer.",
+      "Do reserve lime for state that is live right now (HEAD, unpushed, caret, streaming, in-progress); use sage for everything else that would default to \"the accent color.\"",
+      "Do keep agent prose at a 35em measure while letting code blocks and tables run the full column width.",
+      "Do use --mark corner brackets only on surfaces the owner is meant to act on directly (permission prompts, modals, the focused composer) — not as generic card decoration.",
+      "Do draw all diagonal geometry (git lanes, icon strokes) as straight runs and true 45° turns.",
+      "Do keep both themes low-glare: dark's canvas never drops toward true black, light's canvas never rises toward true white.",
+      "Do reference --mark (never raw --ivory) for anything drawn as a marker on the ambient canvas or a panel; reserve raw --ivory for text on a fixed-color fill like --accent-fill or --danger-fill.",
+      "Do hold any new color to the system's contrast floor: 4.5:1 for text against the panel tone and against --bg-hover, 3:1 for line tokens."
+    ],
+    "donts": [
+      "Don't use lime as a general accent, hover color, or brand color — it reads as \"this is happening now\" everywhere else in the system, and using it decoratively breaks that signal.",
+      "Don't add a shadow to anything that lives inside the layout (a panel, a card, a row, a button). Shadows are reserved for content that floats above the chrome (menus, toasts).",
+      "Don't introduce a second warm hue alongside brass. Warmth in this palette is a single, deliberate exception, not a family.",
+      "Don't reach for a rounded-bubble chat pattern for agent or user messages — replies run in the indented, rule-marked agent column; user turns are a flat-bordered card, never a bubble.",
+      "Don't substitute a glyph-icon font or an external icon package; icons are hand-drawn on the same 16px/1.25px-stroke grid as everything else in Icon.tsx.",
+      "Don't hard-code a hex value in a new component. Every dark-theme token has a light-theme counterpart already wired to the same custom property; reaching for a literal breaks silently the moment the user switches themes.",
+      "Don't regenerate, recolor, or restyle the brand mark (the copper-and-brass winged crab). It's the owner's own artwork with provenance embedded in the PNG/ICO files, not a token-driven shape."
+    ]
+  }
+}

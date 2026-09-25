@@ -1,7 +1,11 @@
 import { pickProject, switchProject } from '../actions'
 import { basename } from '../lib/format'
 import { useApp } from '../store/app'
-import { DecoMark, Icon } from './Icon'
+import { useUi } from '../store/ui'
+import logo from '../assets/logo.png'
+import { Icon } from './Icon'
+import { Bar } from './Skeleton'
+import { ThemeToggle, WindowControls } from './WindowControls'
 
 const PICK = '__pick__'
 
@@ -24,14 +28,14 @@ export function TopBar() {
         <Icon name="menu" />
       </button>
       <span className="brand">
-        <DecoMark />
+        <img className="brand-logo" src={logo} alt="" draggable={false} />
         <span className="brand-name">Claude</span>
       </span>
 
       <span className="topbar-rule" />
 
       <label className="project-picker" title={cwd ?? ''}>
-        <span className="project-name">{cwd ? basename(cwd) : 'Open a folder'}</span>
+        <span className="project-name">{cwd ? basename(cwd) : <Bar width="92px" />}</span>
         <Icon name="chevronDown" size={12} />
         <select
           value={cwd ?? ''}
@@ -54,6 +58,10 @@ export function TopBar() {
 
       <span className="topbar-spacer" />
 
+      <ThemeToggle />
+      <button className="icon-btn" onClick={() => useUi.getState().openSettings()} title="Claude Code settings (/config)">
+        <Icon name="sliders" />
+      </button>
       <button
         className={`icon-btn${layout.rightOpen ? ' is-on' : ''}`}
         onClick={() => setLayout({ rightOpen: !layout.rightOpen })}
@@ -61,6 +69,7 @@ export function TopBar() {
       >
         <Icon name="branch" />
       </button>
+      <WindowControls />
     </header>
   )
 }

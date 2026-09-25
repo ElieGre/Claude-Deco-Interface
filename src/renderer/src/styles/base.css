@@ -1,11 +1,14 @@
-/* Neo-Deco: Art Deco geometry for a dense, dark developer tool.
-   Obsidian canvas, forest-green panels, sage hairlines, ivory type, lime only where something is live.
-   Every design decision is a token in :root; components never hard-code a color, font or radius. */
+/* Neo-Deco: Art Deco geometry for a dense developer tool, in two lights.
+   Dark (default): lifted obsidian canvas, forest panels, sage hairlines, softened ivory type.
+   Light (:root[data-theme='light']): bone-parchment canvas, sage-tinted panels, forest-ink type. Never white.
+   Lime marks only what is live. Every decision is a token; components never hard-code a color, font or radius. */
 
 :root {
-  /* ---------- Palette ---------- */
-  --obsidian: #0b0d0f;
-  --forest: #121a16;
+  color-scheme: dark;
+
+  /* ---------- Palette (sage alone deepens in light, to hold 3:1 as a line on parchment) ---------- */
+  --obsidian: #14181a;
+  --forest: #18221d;
   --sage: #4e8752;
   --lime: #a3e635;
   --emerald: #22c55e;
@@ -14,32 +17,42 @@
 
   /* Surfaces */
   --bg: var(--obsidian); /* chat canvas and file viewer */
-  --bg-panel: var(--forest); /* side panels, bars */
-  --bg-elev: #16211b; /* menus, prompts, dialogs */
-  --bg-input: #0f1512;
-  --bg-hover: #1a271f;
-  --code-bg: #0e1411;
+  --bg-panel: var(--forest); /* side panels, bars, window chrome */
+  --bg-elev: #1d2a23; /* menus, prompts, dialogs */
+  --bg-input: #151c18;
+  --bg-hover: #213027;
+  --code-bg: #111618; /* recessed below the canvas */
   --user-bg: var(--forest);
 
   /* Lines */
-  --border: #233628; /* hairlines inside a panel */
+  --border: #2b3f31; /* hairlines inside a panel */
   --border-strong: var(--sage); /* structural hairlines between panels, focus */
 
-  /* Text */
-  --text: var(--ivory);
-  --text-muted: #b6bcb1;
-  --text-dim: #7f8d81;
+  /* Text: ivory softened a step so the canvas glows less */
+  --text: #ede9de;
+  --text-muted: #b3b9ae;
+  --text-dim: #8a978c;
+  /* Markers: active-tab rules, the viewing-file bar, corner brackets, the brand gem */
+  --mark: var(--ivory);
 
   /* Accents */
   --accent: var(--sage);
-  --accent-text: #86bd8b; /* sage, lifted until it reads as text */
+  --accent-text: #8cc291; /* sage, lifted until it reads as text */
   --accent-soft: rgb(78 135 82 / 0.16);
   --accent-fill: #3e7342; /* filled buttons: ivory on it clears 4.5:1 */
   --vivid: var(--lime); /* HEAD, unpushed commits, the caret, live state. Sparingly. */
+  --vivid-text: var(--lime); /* the same, where it is set as text */
   --success: var(--emerald);
   --warning: var(--brass);
   --danger: #e5715f;
+  --danger-fill: #c4452f; /* the close control's hover field, under ivory */
   --info: #6cc4b0;
+
+  /* Depth and chrome */
+  --shadow-float: 0 16px 32px -16px rgb(0 0 0 / 0.75); /* floating menus and toasts only */
+  --scrim: rgb(6 9 8 / 0.66);
+  --scroll-thumb: #33493a;
+  --line-hover: rgb(237 233 222 / 0.03);
 
   /* Git lanes and chart series, cycled by index. Lime stays reserved for HEAD. */
   --lane-0: #7db482;
@@ -52,7 +65,7 @@
   --lane-7: #aeb8b4;
 
   /* Syntax: shiki's CSS-variables theme reads these (lib/highlight.ts) */
-  --syn-foreground: var(--ivory);
+  --syn-foreground: var(--text);
   --syn-background: transparent;
   --syn-token-keyword: var(--lime);
   --syn-token-string: #5fd08b;
@@ -60,8 +73,8 @@
   --syn-token-constant: var(--brass);
   --syn-token-function: #e9dfc2;
   --syn-token-parameter: #c9d4c5;
-  --syn-token-punctuation: #8d9c90;
-  --syn-token-comment: #6f8373;
+  --syn-token-punctuation: #919f94;
+  --syn-token-comment: #75897a;
   --syn-token-link: var(--info);
 
   /* ---------- Type ---------- */
@@ -82,6 +95,61 @@
   --topbar-h: 44px;
   --statusbar-h: 28px;
   --chat-max-w: 880px;
+}
+
+/* Light: aged bone and sage parchment with forest ink. Every text pairing clears 4.5:1 on the panel tone
+   (the darkest ground it sits on); lime deepens to leaf so it still reads as "live" on a pale ground. */
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --bg: #e6e0d2;
+  --bg-panel: #dad8c8;
+  --bg-elev: #ebe6da;
+  --bg-input: #ede8dc;
+  --bg-hover: #d2d1c0;
+  --code-bg: #ddd7c8;
+  --user-bg: #dad8c8;
+
+  --sage: #3a6b3e;
+  --border: #bcc1ac;
+
+  --text: #232d26;
+  --text-muted: #3f4a42;
+  --text-dim: #515b4b;
+  --mark: #161d18; /* a step darker than the ink, so markers still read as emphasis */
+
+  --accent-text: #2a6231;
+  --accent-soft: rgb(78 135 82 / 0.18);
+  --vivid: #4a8c0c;
+  --vivid-text: #2f6109;
+  --success: #126534;
+  --warning: #735216;
+  --danger: #9e3526;
+  --info: #185e54;
+
+  --shadow-float: 0 14px 28px -14px rgb(40 48 40 / 0.35);
+  --scrim: rgb(58 62 52 / 0.35);
+  --scroll-thumb: #b4b9a3;
+  --line-hover: rgb(35 45 38 / 0.04);
+
+  --lane-0: #2f6a36;
+  --lane-1: #946a1f;
+  --lane-2: #1f7a6c;
+  --lane-3: #6e5b32;
+  --lane-4: #16803f;
+  --lane-5: #b0553c;
+  --lane-6: #3a6b3e;
+  --lane-7: #5e6b66;
+
+  --syn-token-keyword: #336608;
+  --syn-token-string: #0f6b45;
+  --syn-token-string-expression: #0f6b45;
+  --syn-token-constant: #735216;
+  --syn-token-function: #5a4420;
+  --syn-token-parameter: #3e4a42;
+  --syn-token-punctuation: #56615a;
+  --syn-token-comment: #545f53;
+  --syn-token-link: #185e54;
 }
 
 * {
@@ -121,8 +189,8 @@ textarea {
 }
 
 ::selection {
-  background: rgb(78 135 82 / 0.5);
-  color: var(--ivory);
+  background: rgb(78 135 82 / 0.45);
+  color: var(--text);
 }
 
 input,
@@ -144,7 +212,7 @@ textarea {
   height: 9px;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: #2b4232;
+  background-color: var(--scroll-thumb);
   border: 2px solid transparent;
   background-clip: padding-box;
 }
@@ -225,11 +293,12 @@ details[open] > summary .section-chevron {
   transform: rotate(90deg);
 }
 
-/* Corner ticks: framed surfaces (prompts, dialogs, the focused composer) get ivory L-marks over the border. */
+/* Corner ticks: framed surfaces (prompts, dialogs, the focused composer) get ivory L-brackets set just inside
+   the sage border (borders paint over backgrounds, so the brackets live in the padding box). */
 .prompt,
 .modal,
 .composer-box {
-  --tick: var(--ivory);
+  --tick: var(--mark);
   --tick-len: 10px;
   --frame-bg: var(--bg-elev);
   background:
@@ -243,7 +312,6 @@ details[open] > summary .section-chevron {
     linear-gradient(var(--tick), var(--tick)) bottom right / 1px var(--tick-len),
     var(--frame-bg);
   background-repeat: no-repeat;
-  background-origin: border-box;
 }
 
 /* Marquee: three diamonds lit in turn. The one motion the interface owns, used wherever work is in flight. */
@@ -291,6 +359,150 @@ details[open] > summary .section-chevron {
   width: 6px;
   height: 6px;
   transform: rotate(45deg);
+}
+
+/* ---------- Skeletons ----------
+   Flat bars in a faint tint of the text color (so one rule serves both themes), lit in sequence like the marquee.
+   Shown only while data is genuinely loading, never in place of an empty state. */
+.skel {
+  display: inline-block;
+  flex: none;
+  max-width: 100%;
+  height: 8px;
+  vertical-align: middle;
+  background: color-mix(in srgb, var(--text) 11%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .skel {
+    animation: skel 1.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+}
+@keyframes skel {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+.skel-list {
+  padding: 0 0 12px;
+}
+.skel-history {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 30px 9px 14px;
+}
+.skel-history .skel {
+  height: 9px;
+}
+.skel-history .skel-meta {
+  height: 6px;
+}
+.skel-tree {
+  display: flex;
+  align-items: center;
+  height: 26px;
+}
+.skel-changes {
+  padding: 2px 0 10px;
+}
+.skel-file {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+}
+.skel-graph {
+  padding-bottom: 12px;
+}
+/* The graph skeleton: one lane line threaded through hollow diamonds. */
+.skel-commit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 28px;
+  padding: 0 12px 0 30px;
+}
+.skel-commit::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--text) 14%, transparent);
+}
+.skel-node {
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  border: 1px solid color-mix(in srgb, var(--text) 26%, transparent);
+  background: var(--bg-panel);
+  transform: rotate(45deg);
+}
+.skel-time {
+  margin-left: auto;
+}
+.skel-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.skel-card {
+  min-width: 300px;
+}
+.skel-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding: 6px 0;
+}
+.skel-lines .skel {
+  height: 9px;
+}
+.skel-tool {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: var(--gutter);
+  padding: 11px 12px;
+}
+.ctab.skel-tab,
+.ctab.skel-tab:hover {
+  cursor: default;
+  background: none;
+}
+
+/* Boot skeleton (index.html): the shell at the saved widths, the crab and a lit marquee in the center. */
+:root[data-boot-left='closed'] .boot-left,
+:root[data-boot-right='closed'] .boot-right {
+  display: none;
+}
+.panel-tabs.boot-tabs {
+  gap: 24px;
+  padding: 0 20px 15px;
+}
+.boot-center {
+  flex: 1;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 22px;
+}
+.boot-mark {
+  width: 120px;
+  height: auto;
+}
+.boot-composer {
+  height: 58px;
 }
 
 /* ---------- Buttons & inputs ---------- */
@@ -372,10 +584,20 @@ details[open] > summary .section-chevron {
   border-color: transparent;
 }
 
+/* Native arrows replaced with a two-stroke chevron drawn in the palette. */
 select {
-  background: var(--bg-input);
+  appearance: none;
+  background-color: var(--bg-input);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-dim) 50%),
+    linear-gradient(135deg, var(--text-dim) 50%, transparent 50%);
+  background-position:
+    right 8px center,
+    right 4px center;
+  background-size: 4px 4px;
+  background-repeat: no-repeat;
   border: 1px solid var(--border);
-  padding: 1px 4px;
+  padding: 1px 18px 1px 4px;
   cursor: pointer;
 }
 option {
@@ -414,21 +636,98 @@ option {
   height: 100%;
 }
 
-/* Double rule under the top bar: sage, a 2px gap, then a dim echo. */
+/* The top bar is the window chrome (the native title bar is hidden): the whole strip drags the window and
+   double-clicks to maximize; anything interactive opts out. Double rule beneath: sage, a 2px gap, a dim echo. */
 .topbar {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 10px 3px;
+  padding: 0 10px 4px;
   background:
     linear-gradient(to top, var(--sage) 0 1px, transparent 1px 3px, var(--border) 3px 4px, transparent 4px),
     var(--bg-panel);
+  -webkit-app-region: drag;
+  user-select: none;
+}
+.topbar :is(button, select, label, input, a) {
+  -webkit-app-region: no-drag;
+}
+/* An unfocused window dims its brand and controls, as a native inactive title bar does. */
+.brand,
+.win-controls {
+  transition: opacity 0.2s;
+}
+:root[data-window-focus='false'] .brand,
+:root[data-window-focus='false'] .win-controls {
+  opacity: 0.5;
+}
+
+/* Window controls: full-height 46px cells at the far edge, set off by a hairline carrying a diamond. */
+.win-controls {
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  margin: 0 -10px 0 4px;
+  padding-left: 12px;
+}
+.win-controls::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 1px;
+  height: 20px;
+  margin-top: -10px;
+  background: var(--border);
+}
+.win-controls::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+  background: var(--bg-panel);
+  border: 1px solid var(--sage);
+  box-sizing: border-box;
+  transform: rotate(45deg);
+}
+.win-btn {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  transition:
+    background 0.12s,
+    color 0.12s;
+}
+.win-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+.win-btn:active {
+  background: var(--accent-soft);
+}
+.win-close:hover,
+.win-close:active {
+  background: var(--danger-fill);
+  color: var(--ivory);
 }
 .brand {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   padding: 0 2px 0 4px;
+}
+.brand-logo {
+  display: block;
+  height: 26px;
+  width: auto;
+  margin: -2px 0 0;
 }
 .brand-name {
   font: var(--w-display) 15px/1 var(--font-ui);
@@ -486,10 +785,10 @@ option {
   box-shadow: inset -1px 0 0 var(--sage);
 }
 .resizer-left:hover {
-  box-shadow: inset 2px 0 0 var(--ivory);
+  box-shadow: inset 2px 0 0 var(--mark);
 }
 .resizer-right:hover {
-  box-shadow: inset -2px 0 0 var(--ivory);
+  box-shadow: inset -2px 0 0 var(--mark);
 }
 
 .panel {
@@ -555,7 +854,7 @@ option {
   right: 10px;
   bottom: -1px;
   height: 1px;
-  background: var(--ivory);
+  background: var(--mark);
 }
 .panel-tab.is-active::before {
   content: '';
@@ -565,7 +864,7 @@ option {
   width: 5px;
   height: 5px;
   margin-left: -2.5px;
-  background: var(--ivory);
+  background: var(--mark);
   transform: rotate(45deg);
   z-index: 1;
 }
@@ -626,7 +925,7 @@ option {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: var(--ivory);
+  background: var(--mark);
 }
 .tree-chevron {
   flex: none;
@@ -831,12 +1130,12 @@ option {
 .ctab.is-active {
   color: var(--text);
   background: var(--bg);
-  box-shadow: inset 0 1px 0 var(--ivory);
+  box-shadow: inset 0 1px 0 var(--mark);
   border-right-color: var(--sage);
 }
 .ctab + .ctab.is-active {
   box-shadow:
-    inset 0 1px 0 var(--ivory),
+    inset 0 1px 0 var(--mark),
     inset 1px 0 0 var(--sage);
 }
 .ctab-agent {
@@ -850,8 +1149,8 @@ option {
   margin-top: -2px;
 }
 .ctab-agent.is-active .ctab-diamond {
-  background: var(--ivory);
-  border-color: var(--ivory);
+  background: var(--mark);
+  border-color: var(--mark);
 }
 .ctab-agent.is-waiting .ctab-diamond {
   background: var(--vivid);
@@ -927,13 +1226,8 @@ option {
   stroke: var(--sage);
   stroke-width: 1;
 }
-.sun-gem-frame {
-  fill: var(--bg);
-  stroke: var(--ivory);
-  stroke-width: 1;
-}
-.sun-gem {
-  fill: var(--vivid);
+.sun-mark {
+  image-rendering: auto;
 }
 @media (prefers-reduced-motion: no-preference) {
   .sun-ray {
@@ -976,7 +1270,7 @@ option {
 /* User: a flat forest card at the margin. */
 .msg-user {
   align-self: flex-start;
-  max-width: 100%;
+  max-width: min(100%, 560px);
   margin-top: 10px;
 }
 .msg-user:first-child {
@@ -1030,12 +1324,12 @@ option {
   }
 }
 
-.msg-thinking,
-.tool,
-.working,
-.notice-info,
-.notice-output,
-.notice-error {
+.messages-inner > .msg-thinking,
+.messages-inner > .tool,
+.messages-inner > .working,
+.messages-inner > .notice-info,
+.messages-inner > .notice-output,
+.messages-inner > .notice-error {
   margin-left: var(--gutter);
 }
 
@@ -1058,6 +1352,16 @@ option {
 }
 .markdown li + li {
   margin-top: 0.2em;
+}
+/* Prose holds a reading measure; code blocks and tables keep the full column. */
+.markdown p,
+.markdown li,
+.markdown blockquote,
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  max-width: 35em; /* about 72 characters of Jost at 15px */
 }
 .markdown ul > li::marker {
   content: '◆\2002';
@@ -1325,13 +1629,6 @@ option {
   padding-left: 12px;
   border-left: 1px solid var(--border);
 }
-.tool-nested .tool,
-.tool-nested .msg-thinking,
-.tool-nested .notice-info,
-.tool-nested .notice-output,
-.tool-nested .notice-error {
-  margin-left: 0;
-}
 .diff {
   margin: 0;
   font: 400 12px/1.55 var(--font-mono);
@@ -1379,6 +1676,10 @@ option {
   font-size: 13px;
   color: var(--text-muted);
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.file-tree .notice-error {
+  margin: 8px 14px;
 }
 .notice-error {
   color: var(--danger);
@@ -1504,7 +1805,7 @@ option {
   transition: border-color 0.15s;
 }
 .composer-box:focus-within {
-  --tick: var(--ivory);
+  --tick: var(--mark);
   border-color: var(--border-strong);
 }
 .composer textarea {
@@ -1530,7 +1831,7 @@ option {
   background: var(--bg-elev);
   border: 1px solid var(--border-strong);
   padding: 4px 0;
-  box-shadow: 0 16px 32px -16px rgb(0 0 0 / 0.8);
+  box-shadow: var(--shadow-float);
   z-index: 10;
 }
 .slash-item {
@@ -1542,7 +1843,7 @@ option {
 }
 .slash-item.is-active {
   background: var(--accent-soft);
-  box-shadow: inset 2px 0 0 var(--ivory);
+  box-shadow: inset 2px 0 0 var(--mark);
 }
 .slash-name {
   font: 400 12.5px/1.4 var(--font-mono);
@@ -1639,7 +1940,7 @@ option {
 .option.is-picked {
   border-color: var(--border-strong);
   background: var(--accent-soft);
-  box-shadow: inset 2px 0 0 var(--ivory);
+  box-shadow: inset 2px 0 0 var(--mark);
 }
 .option-desc {
   font-size: 12.5px;
@@ -1672,8 +1973,12 @@ option {
   font: 400 12px/1.4 var(--font-mono);
   color: var(--text-dim);
 }
+/* Folders give way first so the file name stays readable in a narrow column. */
 .crumb {
-  flex: none;
+  flex: 0 1 auto;
+  min-width: 2ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .crumb + .crumb::before {
   content: '/';
@@ -1681,9 +1986,8 @@ option {
   color: var(--sage);
 }
 .crumb-file {
-  flex: 0 1 auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex: 0 0 auto;
+  max-width: 100%;
   color: var(--text);
 }
 .viewer-facts {
@@ -1751,7 +2055,7 @@ option {
   display: flex;
 }
 .vline:hover {
-  background: rgb(253 251 247 / 0.025);
+  background: var(--line-hover);
 }
 .vline.is-active {
   background: rgb(78 135 82 / 0.12);
@@ -1765,7 +2069,7 @@ option {
   padding-right: 14px;
   margin-right: 18px;
   text-align: right;
-  color: #5b6b5f;
+  color: var(--syn-token-comment);
   background: var(--bg);
   border-right: 1px solid var(--border);
   user-select: none;
@@ -1799,7 +2103,7 @@ option {
   color: var(--text-dim);
 }
 .git-ab .is-ahead {
-  color: var(--vivid);
+  color: var(--vivid-text);
 }
 .git-ab .is-behind {
   color: var(--warning);
@@ -1934,8 +2238,8 @@ option {
   color: var(--text-muted);
 }
 .git-ref-head {
-  border-color: var(--vivid);
-  color: var(--vivid);
+  border-color: var(--vivid-text);
+  color: var(--vivid-text);
 }
 .git-ref-remote {
   color: var(--text-dim);
@@ -2002,9 +2306,9 @@ option {
 .sb-field select {
   font: 400 11.5px/1 var(--font-mono);
   border-color: transparent;
-  background: transparent;
+  background-color: transparent;
   color: var(--text);
-  padding: 2px 2px;
+  padding: 2px 18px 2px 2px;
 }
 .sb-field select:hover {
   border-color: var(--border);
@@ -2066,7 +2370,7 @@ option {
   padding: 4px 0;
   background: var(--bg-elev);
   border: 1px solid var(--border-strong);
-  box-shadow: 0 16px 32px -16px rgb(0 0 0 / 0.8);
+  box-shadow: var(--shadow-float);
 }
 .menu-item {
   display: flex;
@@ -2083,7 +2387,7 @@ option {
 }
 .menu-item:hover:not(:disabled) {
   background: var(--accent-soft);
-  box-shadow: inset 2px 0 0 var(--ivory);
+  box-shadow: inset 2px 0 0 var(--mark);
 }
 .menu-item:disabled {
   opacity: 0.45;
@@ -2149,7 +2453,7 @@ option {
   padding: 9px 16px 7px;
   background: var(--bg-elev);
   border: 1px solid var(--border-strong);
-  box-shadow: 0 16px 32px -16px rgb(0 0 0 / 0.8);
+  box-shadow: var(--shadow-float);
   font-size: 13.5px;
   cursor: pointer;
   animation: toast-in 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2169,7 +2473,7 @@ option {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgb(4 6 5 / 0.72);
+  background: var(--scrim);
   display: grid;
   place-items: center;
   z-index: 100;

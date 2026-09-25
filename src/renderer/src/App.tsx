@@ -1,19 +1,21 @@
 import { useEffect } from 'react'
-import { bootstrap } from './actions'
+import { bootstrap, closeAgent, newAgent } from './actions'
 import { CenterTabs } from './components/CenterTabs'
 import { Composer } from './components/Composer'
 import { FileViewer } from './components/FileViewer'
 import { GitPanel } from './components/GitPanel'
 import { LeftPanel } from './components/LeftPanel'
 import { MessageList } from './components/MessageList'
-import { ConfirmDialog, ContextMenu, Toasts } from './components/Overlays'
+import { ConfirmDialog, ContextMenu, InfoModal, Toasts } from './components/Overlays'
 import { PermissionPrompt } from './components/PermissionPrompt'
 import { Resizer } from './components/Resizer'
+import { SettingsPanel } from './components/SettingsPanel'
+import { SideQuestions } from './components/SideQuestions'
 import { StatusBar } from './components/StatusBar'
 import { TopBar } from './components/TopBar'
 import { useApp } from './store/app'
 import { useFiles } from './store/files'
-import { useSession } from './store/session'
+import { routeClaudeEvent, useAgents, useSession } from './store/agents'
 import { useViewer } from './store/viewer'
 
 export default function App() {
@@ -22,7 +24,7 @@ export default function App() {
   const viewing = useViewer((s) => s.active)
 
   useEffect(() => {
-    const offClaude = window.api.claude.onEvent((e) => useSession.getState().handleEvent(e))
+    const offClaude = window.api.claude.onEvent(routeClaudeEvent)
     const offFiles = window.api.files.onChanged((change) => {
       if (change.dirs.length) {
         void useFiles.getState().reload(change.dirs)
@@ -45,7 +47,27 @@ export default function App() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const { setLayout, layout } = useApp.getState()
-      if (e.key === 'Tab' && e.shiftKey) {
+      const agents = useAgents.getState()
+      const key = e.key.toLowerCase()
+      // Agent tabs, like terminal tabs: Ctrl+T new, Ctrl+W close, Ctrl+Tab / Ctrl+1…9 switch.
+      if (e.ctrlKey && key === 't') {
+        e.preventDefault()
+        void newAgent()
+      } else if (e.ctrlKey && key === 'w') {
+        e.preventDefault()
+        const file = useViewer.getState().active
+        if (file) useViewer.getState().close(file)
+        else if (agents.activeId) void closeAgent(agents.activeId)
+      } else if (e.ctrlKey && e.key === 'Tab') {
+        e.preventDefault()
+        agents.cycle(e.shiftKey ? -1 : 1)
+      } else if (e.ctrlKey && !e.shiftKey && /^[1-9]$/.test(e.key)) {
+        const target = agents.agents[Number(e.key) - 1]
+        if (target) {
+          e.preventDefault()
+          agents.activate(target.id)
+        }
+      } else if (e.key === 'Tab' && e.shiftKey) {
         e.preventDefault()
         useSession.getState().cyclePermissionMode()
       } else if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'e') {
@@ -85,6 +107,7 @@ export default function App() {
           <CenterTabs />
           {viewing ? <FileViewer path={viewing} /> : <MessageList />}
           <div className="chat-bottom">
+            <SideQuestions />
             <PermissionPrompt />
             <Composer />
           </div>
@@ -99,6 +122,8 @@ export default function App() {
       <StatusBar />
       <ContextMenu />
       <ConfirmDialog />
+      <InfoModal />
+      <SettingsPanel />
       <Toasts />
     </div>
   )

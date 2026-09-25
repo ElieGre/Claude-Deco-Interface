@@ -1,6 +1,68 @@
-// App-wide overlays driven by the ui store: context menu, confirm dialog, toasts.
+// App-wide overlays driven by the ui store: context menu, confirm dialog, info panel, toasts.
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { revealLabel } from '../lib/paths'
 import { useUi } from '../store/ui'
+import '../styles/commands.css'
+import { MarkdownText } from './ChatItemView'
+import { Icon } from './Icon'
+
+/** Read-only panel for /status, /memory, /skills, /hooks, /permissions and /plan. */
+export function InfoModal() {
+  const view = useUi((s) => s.info)
+  const close = () => useUi.getState().showInfo(null)
+  useEffect(() => {
+    if (!view) return
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && useUi.getState().showInfo(null)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [view])
+  if (!view) return null
+  const run = (p: Promise<unknown>) => p.catch((e) => useUi.getState().toast(String(e instanceof Error ? e.message : e), 'warn'))
+  return (
+    <div className="modal-backdrop" onMouseDown={close}>
+      <div className="modal info-modal" role="dialog" aria-label={view.title} onMouseDown={(e) => e.stopPropagation()}>
+        <div className="modal-head">
+          <span>{view.title}</span>
+          <button className="icon-btn" onClick={close} title="Close (Esc)">
+            <Icon name="close" />
+          </button>
+        </div>
+        {view.markdown && <MarkdownText text={view.markdown} />}
+        {view.sections.map((s, i) => (
+          <section key={`${s.title}-${i}`}>
+            <div className="section-label">{s.title}</div>
+            {s.rows.length === 0 ? (
+              <div className="muted info-empty">{s.empty ?? 'None.'}</div>
+            ) : (
+              <ul className="info-rows">
+                {s.rows.map((r, j) => (
+                  <li key={j} className="info-row">
+                    <div className="info-main">
+                      <span className="info-label">{r.label}</span>
+                      {r.value && <span className="info-value">{r.value}</span>}
+                    </div>
+                    {r.detail && <div className="info-detail">{r.detail}</div>}
+                    {r.path && (
+                      <div className="info-actions">
+                        <button className="btn btn-small" onClick={() => void run(window.api.shell.open(r.path!))}>
+                          Open
+                        </button>
+                        <button className="btn btn-small" title={revealLabel} onClick={() => void run(window.api.shell.reveal(r.path!))}>
+                          Reveal
+                        </button>
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))}
+        {view.footer && <div className="info-footer">{view.footer}</div>}
+      </div>
+    </div>
+  )
+}
 
 export function ContextMenu() {
   const menu = useUi((s) => s.menu)

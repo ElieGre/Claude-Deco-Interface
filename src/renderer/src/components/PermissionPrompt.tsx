@@ -1,6 +1,7 @@
 import { useState, type KeyboardEvent } from 'react'
 import type { PermissionRequest } from '../../../shared/types'
-import { useSession } from '../store/session'
+import { useSession } from '../store/agents'
+import type { SessionState } from '../store/session'
 import { MarkdownText, ToolInput } from './ChatItemView'
 
 export function PermissionPrompt() {
@@ -12,7 +13,8 @@ export function PermissionPrompt() {
   return <ToolApproval key={req.id} req={req} />
 }
 
-const respond = useSession.getState().respondPermission
+// Resolved at call time: the prompt always belongs to the agent on screen.
+const respond: SessionState['respondPermission'] = (id, decision) => useSession.getState().respondPermission(id, decision)
 
 function ToolApproval({ req }: { req: PermissionRequest }) {
   const [feedback, setFeedback] = useState('')

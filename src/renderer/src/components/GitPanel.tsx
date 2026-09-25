@@ -3,11 +3,13 @@ import { fileCode } from '../lib/git'
 import { useApp } from '../store/app'
 import { GitGraph } from './GitGraph'
 import { Icon } from './Icon'
+import { GitSkeleton } from './Skeleton'
 
 const REFRESH_MS = 15_000
 
 export function GitPanel() {
   const status = useApp((s) => s.gitStatus)
+  const gitLoaded = useApp((s) => s.gitLoaded)
   const commits = useApp((s) => s.commits)
   const refresh = useApp((s) => s.refreshGit)
 
@@ -21,6 +23,7 @@ export function GitPanel() {
     }
   }, [refresh])
 
+  if (!gitLoaded) return <GitSkeleton />
   if (!status)
     return (
       <aside className="panel git-panel">

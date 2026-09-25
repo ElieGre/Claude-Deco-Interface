@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type DragEvent, type KeyboardEvent } from 'react'
 import type { FileEntry, SlashCommand } from '../../../shared/types'
 import { addToContext, LOCAL_COMMANDS, submit } from '../actions'
-import { useSession } from '../store/session'
+import { isTerminalOnly, TERMINAL_ONLY } from '../lib/commands'
+import { useAgents, useSession } from '../store/agents'
 import { DRAG_TYPE } from './FilesPanel'
 import { Icon } from './Icon'
 
@@ -17,11 +18,25 @@ export function Composer() {
   const sent = useRef<string[]>([])
   const historyIdx = useRef(-1)
 
+  // Each agent tab keeps its own unsent draft, like separate terminals.
+  const activeId = useAgents((s) => s.activeId)
+  const drafts = useRef(new Map<string, string>())
+  const shownFor = useRef(activeId)
+  useEffect(() => {
+    if (shownFor.current === activeId) return
+    if (shownFor.current) drafts.current.set(shownFor.current, text)
+    setText((activeId && drafts.current.get(activeId)) || '')
+    shownFor.current = activeId
+    ta.current?.focus()
+  }, [activeId])
+
   const running = status === 'running' || status === 'compacting'
 
+  // UI commands first, then everything the CLI session registered, then terminal-only ones (shown, but explained if run).
   const commands = useMemo(() => {
-    const localNames = new Set(LOCAL_COMMANDS.map((c) => c.name))
-    return [...LOCAL_COMMANDS, ...(cliCommands ?? []).filter((c) => !localNames.has(c.name))]
+    const seen = new Set(LOCAL_COMMANDS.map((c) => c.name))
+    const cli = (cliCommands ?? []).filter((c) => !seen.has(c.name) && seen.add(c.name))
+    return [...LOCAL_COMMANDS, ...cli, ...TERMINAL_ONLY.filter((c) => !seen.has(c.name))]
   }, [cliCommands])
 
   const slashQuery = /^\/(\S*)$/.exec(text)?.[1]
@@ -80,7 +95,9 @@ export function Composer() {
       return send(text)
     }
     if (e.key === 'Escape') {
-      if (running) void useSession.getState().interrupt()
+      // Like the terminal, Esc closes a /btw answer before it interrupts Claude.
+      if (useSession.getState().sideQuestions.length) useSession.getState().dismissSide()
+      else if (running) void useSession.getState().interrupt()
       else setText('')
       return
     }
@@ -124,7 +141,7 @@ export function Composer() {
           {matches.map((c, i) => (
             <div
               key={`${c.name}-${i}`}
-              className={`slash-item${i === selected ? ' is-active' : ''}`}
+              className={`slash-item${i === selected ? ' is-active' : ''}${isTerminalOnly(c) ? ' is-terminal' : ''}`}
               onMouseEnter={() => setSelected(i)}
               onMouseDown={(e) => {
                 e.preventDefault()
@@ -134,6 +151,7 @@ export function Composer() {
               <span className="slash-name">/{c.name}</span>
               {c.argumentHint && <span className="slash-hint">{c.argumentHint}</span>}
               <span className="slash-desc">{c.description}</span>
+              {isTerminalOnly(c) && <span className="slash-tag">terminal only</span>}
             </div>
           ))}
         </div>

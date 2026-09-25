@@ -1,13 +1,16 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import type { ChatItem } from '../lib/chat'
 import { useApp } from '../store/app'
-import { useSession } from '../store/session'
+import { useSession } from '../store/agents'
 import { ChatItemView } from './ChatItemView'
 import { Marquee } from './Icon'
+import { ChatSkeleton } from './Skeleton'
+import logo from '../assets/logo.png'
 
 export function MessageList() {
   const items = useSession((s) => s.items)
   const status = useSession((s) => s.status)
+  const restoring = useSession((s) => s.restoring)
   const ref = useRef<HTMLDivElement>(null)
   const stickToBottom = useRef(true)
 
@@ -26,7 +29,11 @@ export function MessageList() {
   return (
     <div className="messages" ref={ref} onScroll={onScroll}>
       <div className="messages-inner">
-        {top.length === 0 ? <EmptyState /> : top.map((it) => <ChatItemView key={it.id} item={it} nested={nested} />)}
+        {top.length === 0 ? (
+          restoring ? <ChatSkeleton /> : <EmptyState />
+        ) : (
+          top.map((it) => <ChatItemView key={it.id} item={it} nested={nested} />)
+        )}
         {(status === 'running' || status === 'compacting') && (
           <div className="working" role="status">
             <Marquee />
@@ -52,10 +59,11 @@ function EmptyState() {
   )
 }
 
-// Rays at 15° steps from a point on the horizon, long and short in turn, over a stepped base.
+// Rays at 15° steps from a point on the horizon, long and short in turn, over a stepped base;
+// the app's crab mark stands at the center, on the horizon.
 const RAYS = Array.from({ length: 11 }, (_, i) => {
   const a = ((i + 1) * 15 * Math.PI) / 180
-  const [r1, r2] = [34, i % 2 ? 84 : 108]
+  const [r1, r2] = [50, i % 2 ? 86 : 110]
   const pt = (r: number) => [120 - Math.cos(a) * r, 120 - Math.sin(a) * r].map((n) => n.toFixed(2)).join(' ')
   return { d: `M${pt(r1)}L${pt(r2)}`, long: i % 2 === 0 }
 })
@@ -69,8 +77,7 @@ function Sunburst() {
         <path key={i} className={r.long ? 'sun-ray is-long' : 'sun-ray'} d={r.d} style={{ animationDelay: `${i * 40}ms` }} />
       ))}
       <path className="sun-step" d="M0 120.5H240M44 126.5H196M88 132.5H152" />
-      <path className="sun-gem-frame" d="M120 88L136 104 120 120 104 104Z" />
-      <path className="sun-gem" d="M120 97L127 104 120 111 113 104Z" />
+      <image className="sun-mark" href={logo} x="88" y="75" width="64" height="45" />
     </svg>
   )
 }

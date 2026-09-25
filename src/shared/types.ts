@@ -38,9 +38,12 @@ export interface LayoutConfig {
   leftTab: 'chats' | 'files'
 }
 
+export type ThemeName = 'dark' | 'light'
+
 export interface AppConfig {
   cwd: string | null
   recentProjects: string[]
+  theme: ThemeName
   layout: LayoutConfig
   /** Warn before an action replaces the current chat with a new one (e.g. changing the working folder). */
   confirmNewChat: boolean
@@ -158,10 +161,48 @@ export interface FsChange {
   git: boolean
 }
 
+// ---------- Interactive CLI commands ----------
+
+/**
+ * Read-only views behind the CLI's interactive commands (/status, /hooks, /memory, /skills, /permissions, /plan).
+ * They come from control requests the SDK implements but doesn't publish types for, so the shapes are
+ * typed loosely here and in the renderer (observed on Claude Code 2.1.280).
+ */
+export type InfoKind = 'status' | 'hooks' | 'memory' | 'skills' | 'permissions' | 'plan'
+
+/** Answer to a /btw side question; it never enters the main conversation. */
+export interface SideAnswer {
+  response: string
+  synthetic: boolean
+}
+
+export interface ExportedConversation {
+  text: string
+  default_filename: string
+}
+
+/** One Claude Code setting from the terminal's /config, as the app's settings panel shows it. */
+export interface CliSetting {
+  key: string
+  label: string
+  kind: 'boolean' | 'enum' | 'text'
+  options: string[]
+  /** Current value; null when the app can't read it (it can still be set) */
+  value: string | null
+}
+
 // ---------- Bridge API exposed on window.api ----------
 
 export interface Api {
   platform: string
+  /** Our own title bar drives the frameless window. */
+  window: {
+    minimize(): Promise<void>
+    toggleMaximize(): Promise<void>
+    close(): Promise<void>
+    isMaximized(): Promise<boolean>
+    onMaximizedChange(cb: (maximized: boolean) => void): () => void
+  }
   config: {
     get(): Promise<AppConfig>
     set(patch: Partial<AppConfig>): Promise<AppConfig>
@@ -176,6 +217,11 @@ export interface Api {
     setEffort(key: string, effort: EffortLevel | null): Promise<void>
     contextUsage(key: string): Promise<SDKControlGetContextUsageResponse>
     respondPermission(key: string, id: string, decision: PermissionDecision): Promise<void>
+    sideQuestion(key: string, question: string): Promise<SideAnswer | null>
+    info(key: string, kind: InfoKind): Promise<unknown>
+    exportConversation(key: string): Promise<ExportedConversation>
+    /** Replaces the session's extra working directories (what /add-dir accumulates) */
+    setAdditionalDirectories(key: string, dirs: string[]): Promise<void>
     stop(key: string): Promise<void>
     onEvent(cb: (event: ClaudeEvent) => void): () => void
   }
@@ -184,10 +230,17 @@ export interface Api {
     messages(sessionId: string, cwd: string): Promise<SessionMessage[]>
     rename(sessionId: string, title: string, cwd: string): Promise<void>
     remove(sessionId: string, cwd: string): Promise<void>
+    /** Copy a saved chat into a new session; returns the new session id */
+    fork(sessionId: string, cwd: string): Promise<string>
   }
   git: {
     status(cwd: string): Promise<GitStatus | null>
     graph(cwd: string, limit?: number): Promise<GitCommit[]>
+  }
+  cliConfig: {
+    list(cwd: string): Promise<CliSetting[]>
+    /** Runs `/config key=value` in a background CLI; returns its confirmation text */
+    set(cwd: string, key: string, value: string): Promise<string>
   }
   files: {
     list(dir: string, root: string): Promise<FileEntry[]>
@@ -199,5 +252,7 @@ export interface Api {
     reveal(path: string): Promise<void>
     open(path: string): Promise<void>
     copy(text: string): Promise<void>
+    /** Save-as dialog, then write the text; returns the chosen path or null if cancelled */
+    saveText(defaultName: string, text: string): Promise<string | null>
   }
 }

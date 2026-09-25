@@ -11,13 +11,40 @@ import type { WebContents } from 'electron'
 import type {
   ClaudeEventBody,
   EffortLevel,
+  ExportedConversation,
+  InfoKind,
   PermissionDecision,
   PermissionMode,
+  SideAnswer,
   StartSessionOptions,
 } from '../shared/types'
 
+/**
+ * Control requests the CLI's interactive commands (/btw, /status, /memory…) use. They're implemented on the
+ * SDK's Query object but missing from its public typings (0.3.280), so they're declared here.
+ */
+interface CommandControls {
+  askSideQuestion(question: string): Promise<SideAnswer | null>
+  exportConversation(): Promise<ExportedConversation>
+  getStatus(): Promise<unknown>
+  getHooksListing(): Promise<unknown>
+  getMemoryDialog(): Promise<unknown>
+  getSkillsDialog(): Promise<unknown>
+  listPermissionRules(): Promise<unknown>
+  getPlan(): Promise<unknown>
+}
+
+const INFO_REQUESTS: Record<InfoKind, keyof CommandControls> = {
+  status: 'getStatus',
+  hooks: 'getHooksListing',
+  memory: 'getMemoryDialog',
+  skills: 'getSkillsDialog',
+  permissions: 'listPermissionRules',
+  plan: 'getPlan',
+}
+
 /** Push-based async iterable feeding user messages into the SDK's streaming input mode. */
-class InputQueue<T> implements AsyncIterable<T> {
+export class InputQueue<T> implements AsyncIterable<T> {
   private items: T[] = []
   private waiters: ((r: IteratorResult<T>) => void)[] = []
   private done = false
@@ -202,6 +229,31 @@ export class ClaudeSession {
 
   contextUsage() {
     return this.q.getContextUsage({ detail: 'full' })
+  }
+
+  private get controls(): CommandControls {
+    return this.q as unknown as CommandControls
+  }
+
+  /** /btw: answered from the conversation so far, even mid-turn, without being added to it. */
+  sideQuestion(question: string): Promise<SideAnswer | null> {
+    return this.controls.askSideQuestion(question)
+  }
+
+  info(kind: InfoKind): Promise<unknown> {
+    return (this.controls[INFO_REQUESTS[kind]] as () => Promise<unknown>).call(this.q)
+  }
+
+  exportConversation(): Promise<ExportedConversation> {
+    return this.controls.exportConversation()
+  }
+
+  /**
+   * /add-dir isn't registered in SDK sessions, but the same effect is a flag-layer settings change.
+   * Settings paths need forward slashes: the parser eats Windows backslashes.
+   */
+  setAdditionalDirectories(dirs: string[]): Promise<void> {
+    return this.q.applyFlagSettings({ permissions: { additionalDirectories: dirs.map((d) => d.replace(/\\/g, '/')) } })
   }
 
   close(): void {

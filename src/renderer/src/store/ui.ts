@@ -1,5 +1,6 @@
 // Transient UI: toasts, the confirm dialog and the context menu.
 import { create } from 'zustand'
+import type { InfoView } from '../lib/commands'
 
 export interface Toast {
   id: number
@@ -28,12 +29,19 @@ interface UiState {
   toasts: Toast[]
   confirm: (ConfirmOptions & { resolve: (r: ConfirmResult) => void }) | null
   menu: { x: number; y: number; items: MenuItem[] } | null
+  /** Panel for /status, /memory, /skills… */
+  info: InfoView | null
+  /** Claude Code settings panel (/config) */
+  settingsOpen: boolean
 
   toast(text: string, tone?: Toast['tone']): void
   dismissToast(id: number): void
   ask(opts: ConfirmOptions): Promise<ConfirmResult>
   openMenu(x: number, y: number, items: MenuItem[]): void
   closeMenu(): void
+  showInfo(view: InfoView | null): void
+  openSettings(): void
+  closeSettings(): void
 }
 
 let toastSeq = 0
@@ -42,6 +50,8 @@ export const useUi = create<UiState>()((set, get) => ({
   toasts: [],
   confirm: null,
   menu: null,
+  info: null,
+  settingsOpen: false,
 
   toast(text, tone = 'info') {
     const id = ++toastSeq
@@ -74,6 +84,18 @@ export const useUi = create<UiState>()((set, get) => ({
 
   closeMenu() {
     set({ menu: null })
+  },
+
+  showInfo(view) {
+    set({ info: view })
+  },
+
+  openSettings() {
+    set({ settingsOpen: true })
+  },
+
+  closeSettings() {
+    set({ settingsOpen: false })
   },
 }))
 

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import type { ContextUsage, EffortLevel, ModelInfo, PermissionMode } from '../../../shared/types'
 import { formatCost, formatDuration, formatTokens } from '../lib/format'
-import { EFFORT_LEVELS, PERMISSION_MODES, useSession } from '../store/session'
+import { useAgents, useSession } from '../store/agents'
+import { EFFORT_LEVELS, PERMISSION_MODES } from '../store/session'
 import { Icon, Marquee } from './Icon'
+import { StatusSkeleton } from './Skeleton'
 
 const MODE_LABELS: Record<string, string> = {
   default: 'Ask before edits',
@@ -24,7 +26,13 @@ function matchModel(models: ModelInfo[], current: string | null): ModelInfo | un
   )
 }
 
+/** Until the first agent exists there is no session to report on, so the bar shows its skeleton, not "closed". */
 export function StatusBar() {
+  const booting = useAgents((s) => s.agents.length === 0)
+  return booting ? <StatusSkeleton /> : <LiveStatusBar />
+}
+
+function LiveStatusBar() {
   const status = useSession((s) => s.status)
   const model = useSession((s) => s.model)
   const effort = useSession((s) => s.effort)

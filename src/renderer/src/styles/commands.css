@@ -1,0 +1,132 @@
+/* Styles for the CLI-parity commands: /btw side answers, the info panel (/status, /memory, /skills…),
+   and terminal-only entries in the slash menu. Uses only the tokens defined in base.css. */
+
+/* ---------- /btw ---------- */
+
+.btw-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 45vh;
+  overflow-y: auto;
+}
+.btw-card {
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--vivid);
+  background: var(--bg-elev);
+  padding: 8px 12px 6px;
+}
+.btw-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btw-tag {
+  flex: none;
+  font: var(--w-text) 10.5px/1 var(--font-ui);
+  text-transform: uppercase;
+  letter-spacing: var(--track-label);
+  color: var(--vivid);
+}
+.btw-question {
+  flex: 1;
+  min-width: 0;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.btw-pending {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.btw-answer {
+  padding: 4px 0 2px;
+  font: var(--w-text) var(--prose-size) / 1.55 var(--font-prose);
+}
+.btw-foot {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* ---------- Info panel ---------- */
+
+.info-modal {
+  width: min(680px, 92vw);
+}
+.info-modal .section-label {
+  padding: 10px 0 4px;
+}
+.info-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.info-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.info-main {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  min-width: 0;
+}
+.info-label {
+  color: var(--text);
+  /* break between words only, so labels never split mid-word next to a long value */
+  overflow-wrap: break-word;
+}
+.info-value {
+  margin-left: auto;
+  font: 400 var(--mono-size) / 1.5 var(--font-mono);
+  color: var(--text-muted);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.info-detail {
+  grid-column: 1;
+  font-size: 12px;
+  color: var(--text-dim);
+  overflow-wrap: anywhere;
+}
+.info-actions {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.info-empty {
+  padding: 4px 0 8px;
+  font-size: 12.5px;
+}
+.info-footer {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* ---------- Slash menu: terminal-only entries ---------- */
+
+.slash-item.is-terminal .slash-name,
+.slash-item.is-terminal .slash-desc {
+  color: var(--text-dim);
+}
+.slash-tag {
+  flex: none;
+  margin-left: auto;
+  padding: 0 6px;
+  border: 1px solid var(--border);
+  font: var(--w-text) 10px/1.6 var(--font-ui);
+  text-transform: uppercase;
+  letter-spacing: var(--track-label);
+  color: var(--text-dim);
+}

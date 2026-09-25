@@ -1,7 +1,7 @@
 // Which project files are in the current chat's context: attached by the user, or read/edited by Claude.
 import { useMemo } from 'react'
 import { useApp } from '../store/app'
-import { useSession } from '../store/session'
+import { useSession } from '../store/agents'
 import type { ChatItem } from './chat'
 import { joinPath, normPath } from './paths'
 

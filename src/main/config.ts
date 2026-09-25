@@ -1,11 +1,15 @@
 import { app } from 'electron'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import type { AppConfig } from '../shared/types'
+import type { AppConfig, ThemeName } from '../shared/types'
+
+/** Window background per theme (matches --bg-panel) so resizing and first paint never flash the other theme. */
+export const WINDOW_BG: Record<ThemeName, string> = { dark: '#18221d', light: '#dad8c8' }
 
 const DEFAULTS: AppConfig = {
   cwd: null,
   recentProjects: [],
+  theme: 'dark',
   layout: { leftWidth: 260, rightWidth: 480, leftOpen: true, rightOpen: true, leftTab: 'chats' },
   confirmNewChat: true,
 }
@@ -24,6 +28,8 @@ export function loadConfig(): AppConfig {
   // Like the CLI: default to the directory the app was launched from.
   if (!cache.cwd || !existsSync(cache.cwd)) cache.cwd = process.cwd()
   cache.recentProjects = cache.recentProjects.filter((p) => existsSync(p))
+  // Configs from before Neo-Deco may still say 'midnight' or 'paper'.
+  if (cache.theme !== 'light') cache.theme = 'dark'
   return cache
 }
 

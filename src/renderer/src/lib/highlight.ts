@@ -1,11 +1,9 @@
 // Syntax highlighting with shiki. The theme is shiki's CSS-variables theme, so every token color is a
 // `--syn-*` custom property defined in styles/base.css: retune the palette there, not here.
 // Grammars load on demand (one chunk per language) and the JS regex engine avoids needing wasm.
-import { createCssVariablesTheme, createHighlighterCore, type HighlighterCore, type ThemedToken } from 'shiki/core'
-import { createJavaScriptRegexEngine } from 'shiki/engine/javascript'
+// The highlighter core and regex engine are imported on first use, keeping them out of the startup bundle.
+import type { HighlighterCore, ThemedToken } from 'shiki/core'
 import { bundledLanguages } from 'shiki/langs'
-
-const theme = createCssVariablesTheme({ name: 'neo-deco', variablePrefix: '--syn-', fontStyle: true })
 
 /** Past this size, files render as plain text: tokenizing is synchronous and would stall the UI. */
 export const HIGHLIGHT_LIMIT = { chars: 400_000, lines: 8_000 }
@@ -57,7 +55,14 @@ export function langForFence(label: string | undefined): string | null {
 
 let highlighter: Promise<HighlighterCore> | null = null
 const getHighlighter = () =>
-  (highlighter ??= createHighlighterCore({ themes: [theme], langs: [], engine: createJavaScriptRegexEngine() }))
+  (highlighter ??= Promise.all([import('shiki/core'), import('shiki/engine/javascript')]).then(
+    ([{ createCssVariablesTheme, createHighlighterCore }, { createJavaScriptRegexEngine }]) =>
+      createHighlighterCore({
+        themes: [createCssVariablesTheme({ name: 'neo-deco', variablePrefix: '--syn-', fontStyle: true })],
+        langs: [],
+        engine: createJavaScriptRegexEngine(),
+      }),
+  ))
 
 /** Token lines for `code`, or null when the language is unknown or the input is too big to highlight. */
 export async function tokenize(code: string, lang: string | null): Promise<ThemedToken[][] | null> {
